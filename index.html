@@ -1,0 +1,100 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Example Site – CARP Design</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Sample responsive site with accessible HTML, CSS variables, and interactive JS.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <a href="#" class="logo">BrandLogo</a>
+    <button class="menu-toggle" aria-label="Toggle navigation">&#9776;</button>
+    <nav>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="home">
+  <!-- Hero Section -->
+  <section class="hero" aria-label="Hero banner">
+    <div class="hero-content">
+      <h1 class="hero-title">Welcome to Our Site</h1>
+      <p class="hero-subtitle">A compelling tagline goes here.</p>
+      <a href="#features" class="btn btn-primary">Learn More</a>
+    </div>
+  </section>
+
+  <!-- Features Section (Card Grid) -->
+  <section id="features" class="features">
+    <div class="container">
+      <h2 class="section-title">Key Features</h2>
+      <div class="grid grid-cols-3 gap-2">
+        <div class="card">
+          <h3>Feature One</h3>
+          <p>Short description of feature one.</p>
+        </div>
+        <div class="card">
+          <h3>Feature Two</h3>
+          <p>Short description of feature two.</p>
+        </div>
+        <div class="card">
+          <h3>Feature Three</h3>
+          <p>Short description of feature three.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section (Split Layout) -->
+  <section id="about" class="about">
+    <div class="container split">
+      <div class="split-image">
+        <img src="https://via.placeholder.com/400" alt="Illustration">
+      </div>
+      <div class="split-text">
+        <h2 class="section-title">About Us</h2>
+        <p>Some information about the company or site. This section uses an image alongside text to break up the layout (a Z-pattern) which guides the eye.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section (Form) -->
+  <section id="contact" class="contact">
+    <div class="container">
+      <h2 class="section-title">Get in Touch</h2>
+      <form id="contactForm" class="contact-form" novalidate>
+        <label>
+          Name<br><input type="text" name="name" required>
+        </label>
+        <label>
+          Email<br><input type="email" name="email" required>
+        </label>
+        <label>
+          Message<br><textarea name="message" rows="4" required></textarea>
+        </label>
+        <button type="submit" class="btn btn-secondary">Send Message</button>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>&copy; 2026 Example Company. <a href="#">Privacy Policy</a></p>
+  </div>
+</footer>
+
+<script src="script.js" type="module"></script>
+</body>
+</html>
