@@ -1,100 +1,214 @@
-<!-- index.html -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Example Site – CARP Design</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Sample responsive site with accessible HTML, CSS variables, and interactive JS.">
+  <meta name="theme-color" content="#10131b">
+  <meta name="description" content="LinkChat — conversations connected by a code.">
+  <title>LinkChat — Your people, one code away.</title>
   <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
 </head>
 <body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="LinkChat home">
+        <span class="brand-icon">L</span>
+        <span>link<span class="brand-light">chat</span></span>
+      </a>
+      <div class="topbar-right">
+        <span class="secure-label"><span class="status-dot"></span> Simple. Connected.</span>
+        <button id="logoutBtn" class="button button-ghost hidden">Log out</button>
+      </div>
+    </header>
 
-<header>
-  <div class="container">
-    <a href="#" class="logo">BrandLogo</a>
-    <button class="menu-toggle" aria-label="Toggle navigation">&#9776;</button>
-    <nav>
-      <ul>
-        <li><a href="#home">Home</a></li>
-        <li><a href="#features">Features</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </nav>
+    <main>
+      <!-- Authentication -->
+      <section id="authScreen" class="auth-layout">
+        <div class="hero-copy">
+          <span class="eyebrow"><span class="sparkle">✳</span> YOUR SPACE. YOUR PEOPLE.</span>
+          <h1>Good conversations<br>start with a <span>connection.</span></h1>
+          <p class="hero-description">
+            Create a private room, share your code, and bring your people together.
+            No complicated setup.
+          </p>
+
+          <div class="mini-preview">
+            <div class="avatar-stack">
+              <span class="avatar avatar-purple">J</span>
+              <span class="avatar avatar-green">M</span>
+              <span class="avatar avatar-orange">A</span>
+              <span class="avatar avatar-blue">K</span>
+            </div>
+            <div>
+              <strong>Your people, in one place.</strong>
+              <p>One code connects the conversation.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="auth-card">
+          <div class="auth-tabs" role="tablist" aria-label="Account options">
+            <button class="auth-tab active" data-auth="signup" role="tab"
+              aria-selected="true">Create account</button>
+            <button class="auth-tab" data-auth="login" role="tab"
+              aria-selected="false">Log in</button>
+          </div>
+
+          <div class="card-heading">
+            <h2 id="authTitle">Create your account</h2>
+            <p id="authSubtitle">Your next conversation starts here.</p>
+          </div>
+
+          <form id="authForm">
+            <label for="username">Username</label>
+            <input id="username" name="username" autocomplete="username"
+              minlength="2" maxlength="24" placeholder="e.g. skywalker" required>
+
+            <div id="passwordGroup">
+              <label for="password">Password</label>
+              <input id="password" name="password" type="password"
+                autocomplete="new-password" minlength="6"
+                placeholder="At least 6 characters" required>
+            </div>
+
+            <button id="authSubmit" class="button button-primary full-width"
+              type="submit">Create account <span>→</span></button>
+          </form>
+
+          <p id="authFeedback" class="feedback" role="status" aria-live="polite"></p>
+          <div class="card-divider"><span>OR</span></div>
+
+          <p class="join-hint">Already have a room code?</p>
+          <button id="showJoinBtn" class="button button-secondary full-width">
+            <span>↗</span> Join a conversation
+          </button>
+
+          <p class="fine-print">Prototype mode: account data is stored in this browser.</p>
+        </div>
+      </section>
+
+      <!-- Main dashboard -->
+      <section id="dashboardScreen" class="dashboard hidden">
+        <div class="welcome-row">
+          <div>
+            <span class="eyebrow">YOUR LINKCHAT SPACE</span>
+            <h1>Hey, <span id="welcomeName">friend</span> 👋</h1>
+            <p>What would you like to do today?</p>
+          </div>
+          <div class="profile-avatar" id="profileAvatar">F</div>
+        </div>
+
+        <div class="action-grid">
+          <article class="action-card create-card">
+            <div class="action-icon">✳</div>
+            <span class="card-kicker">START SOMETHING NEW</span>
+            <h2>Create a chat</h2>
+            <p>Start a conversation and get a unique code to share with your people.</p>
+            <form id="createRoomForm" class="inline-form">
+              <label class="sr-only" for="roomName">Conversation name</label>
+              <input id="roomName" maxlength="48" placeholder="e.g. Weekend plans" required>
+              <button class="button button-primary" type="submit">Create room →</button>
+            </form>
+          </article>
+
+          <article class="action-card join-card">
+            <div class="action-icon join-icon">↗</div>
+            <span class="card-kicker">YOU'RE INVITED</span>
+            <h2>Join a chat</h2>
+            <p>Got a LinkChat code? Enter it below to open your conversation.</p>
+            <form id="joinRoomForm" class="inline-form">
+              <label class="sr-only" for="joinCode">Nine-digit room code</label>
+              <input id="joinCode" inputmode="numeric" autocomplete="off"
+                placeholder="000-000-000" maxlength="11" required>
+              <button class="button button-light" type="submit">Join room →</button>
+            </form>
+            <p id="joinFeedback" class="feedback" role="status" aria-live="polite"></p>
+          </article>
+        </div>
+
+        <section class="rooms-section">
+          <div class="section-heading">
+            <div>
+              <h2>Your conversations</h2>
+              <p>Rooms you've created or joined on this device.</p>
+            </div>
+            <span id="roomCount" class="count-pill">0 rooms</span>
+          </div>
+          <div id="roomList" class="room-list"></div>
+        </section>
+      </section>
+
+      <!-- Chat room -->
+      <section id="chatScreen" class="chat-screen hidden">
+        <div class="chat-toolbar">
+          <button id="backBtn" class="button button-ghost">← Back</button>
+          <div class="room-code-pill"><span class="status-dot"></span> Room connected</div>
+        </div>
+
+        <div class="chat-layout">
+          <section class="chat-main">
+            <header class="chat-header">
+              <div class="room-heading-icon">✳</div>
+              <div class="room-title">
+                <h1 id="chatRoomName">Conversation</h1>
+                <p><span id="chatMemberCount">1</span> member(s) · Local prototype</p>
+              </div>
+              <button id="copyCodeBtn" class="button button-secondary">Copy code</button>
+            </header>
+
+            <div class="invite-banner">
+              <div>
+                <span class="card-kicker">INVITE YOUR PEOPLE</span>
+                <strong id="displayRoomCode">000-000-000</strong>
+                <p>Share this code so others can join this room.</p>
+              </div>
+              <button id="copyCodeBtn2" class="button button-primary">Copy ↗</button>
+            </div>
+
+            <div id="messages" class="messages" aria-live="polite"
+              aria-label="Chat messages"></div>
+
+            <form id="messageForm" class="message-form">
+              <label class="sr-only" for="messageInput">Your message</label>
+              <input id="messageInput" maxlength="2000" autocomplete="off"
+                placeholder="Write a message..." required>
+              <button class="send-button" type="submit" aria-label="Send message">↑</button>
+            </form>
+            <p class="chat-footnote">Be kind. Keep the conversation going.</p>
+          </section>
+
+          <aside class="chat-sidebar">
+            <span class="card-kicker">ABOUT THIS ROOM</span>
+            <h3>Room details</h3>
+            <div class="detail-row">
+              <span>Created by</span>
+              <strong id="roomOwner">—</strong>
+            </div>
+            <div class="detail-row">
+              <span>Room code</span>
+              <strong id="sidebarCode">—</strong>
+            </div>
+            <div class="detail-row">
+              <span>Members</span>
+              <strong id="sidebarMembers">1</strong>
+            </div>
+            <div class="sidebar-note">
+              <span>✦</span>
+              Anyone with the code can join this demo room.
+            </div>
+          </aside>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>© 2026 LinkChat</span>
+      <span>Made for better conversations <span class="footer-heart">♥</span></span>
+    </footer>
   </div>
-</header>
 
-<main id="home">
-  <!-- Hero Section -->
-  <section class="hero" aria-label="Hero banner">
-    <div class="hero-content">
-      <h1 class="hero-title">Welcome to Our Site</h1>
-      <p class="hero-subtitle">A compelling tagline goes here.</p>
-      <a href="#features" class="btn btn-primary">Learn More</a>
-    </div>
-  </section>
-
-  <!-- Features Section (Card Grid) -->
-  <section id="features" class="features">
-    <div class="container">
-      <h2 class="section-title">Key Features</h2>
-      <div class="grid grid-cols-3 gap-2">
-        <div class="card">
-          <h3>Feature One</h3>
-          <p>Short description of feature one.</p>
-        </div>
-        <div class="card">
-          <h3>Feature Two</h3>
-          <p>Short description of feature two.</p>
-        </div>
-        <div class="card">
-          <h3>Feature Three</h3>
-          <p>Short description of feature three.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- About Section (Split Layout) -->
-  <section id="about" class="about">
-    <div class="container split">
-      <div class="split-image">
-        <img src="https://via.placeholder.com/400" alt="Illustration">
-      </div>
-      <div class="split-text">
-        <h2 class="section-title">About Us</h2>
-        <p>Some information about the company or site. This section uses an image alongside text to break up the layout (a Z-pattern) which guides the eye.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Contact Section (Form) -->
-  <section id="contact" class="contact">
-    <div class="container">
-      <h2 class="section-title">Get in Touch</h2>
-      <form id="contactForm" class="contact-form" novalidate>
-        <label>
-          Name<br><input type="text" name="name" required>
-        </label>
-        <label>
-          Email<br><input type="email" name="email" required>
-        </label>
-        <label>
-          Message<br><textarea name="message" rows="4" required></textarea>
-        </label>
-        <button type="submit" class="btn btn-secondary">Send Message</button>
-      </form>
-    </div>
-  </section>
-</main>
-
-<footer class="site-footer">
-  <div class="container">
-    <p>&copy; 2026 Example Company. <a href="#">Privacy Policy</a></p>
-  </div>
-</footer>
-
-<script src="script.js" type="module"></script>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
 </body>
 </html>
